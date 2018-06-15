@@ -4,6 +4,7 @@ export default class TodoList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      text: '',
       todos: [
         {
           text: 'Do creative friday',
@@ -13,11 +14,25 @@ export default class TodoList extends React.Component {
     }
   }
 
+  inputChange = (e) => {
+    this.setState({text: e.target.value})
+  }
+
+  addTodo = (e) => {
+    e.preventDefault()
+    const todo = {
+      text: this.state.text,
+      created_at: new Date().toISOString()
+    }
+    const newTodos = this.state.todos.concat(todo)
+    this.setState({todos: newTodos, text: ''})
+  }
+
   render() {
     return (
       <div>
-        <form>
-          <input type='text'/>
+        <form onSubmit={this.addTodo}>
+          <input type='text' value={this.state.text} onChange={this.inputChange}/>
           <button type='submit'>Add</button>
         </form>
         <ul>
