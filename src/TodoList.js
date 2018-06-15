@@ -1,16 +1,19 @@
 import React from 'react'
 
+import { firebaseDb } from './firebase'
+
 export default class TodoList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       text: '',
-      todos: [
-        {
-          text: 'Do creative friday',
-          created_at: new Date().toISOString()
-        }
-      ]
+      // todos: [
+      //   {
+      //     text: 'Do creative friday',
+      //     created_at: new Date().toISOString()
+      //   }
+      // ]
+      todos: []
     }
   }
 
@@ -22,10 +25,21 @@ export default class TodoList extends React.Component {
     e.preventDefault()
     const todo = {
       text: this.state.text,
-      created_at: new Date().toISOString()
+      created_at: new Date().toISOString(),
+      author: this.props.user.email
     }
-    const newTodos = this.state.todos.concat(todo)
-    this.setState({todos: newTodos, text: ''})
+    // const newTodos = this.state.todos.concat(todo)
+    // this.setState({todos: newTodos, text: ''})
+    firebaseDb.collection('todos')
+      .add(todo)
+      .then(todoRef => {
+        const newTodo = {
+          id: todoRef.id,
+          ...todo
+        }
+        const newTodos = this.state.todos.concat(newTodo)
+        this.setState({todos: newTodos, text: ''})
+      })
   }
 
   delTodo = (todo) => {

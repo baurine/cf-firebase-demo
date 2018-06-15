@@ -70,7 +70,7 @@ export default class AuthBox extends React.Component {
           this.state.user &&
           <div>
             <button onClick={this.signout}>SignOut</button>
-            <TodoList/>
+            <TodoList user={this.state.user}/>
           </div>
         }
       </div>
