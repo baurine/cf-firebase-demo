@@ -42,15 +42,16 @@ export default class TodoList extends React.Component {
     // this.setState({todos: newTodos, text: ''})
     firebaseDb.collection('todos')
       .add(todo)
-      .then(todoRef => {
-        const newTodo = {
-          id: todoRef.id,
-          ...todo
-        }
-        const newTodos = this.state.todos.concat(newTodo)
-        this.setState({todos: newTodos, text: ''})
-        console.log(newTodo)
-      })
+      // .then(todoRef => {
+      //   const newTodo = {
+      //     id: todoRef.id,
+      //     ...todo
+      //   }
+      //   const newTodos = this.state.todos.concat(newTodo)
+      //   this.setState({todos: newTodos, text: ''})
+      //   console.log(newTodo)
+      // })
+    this.setState({text: ''})
   }
 
   delTodo = (todo) => {
@@ -59,10 +60,10 @@ export default class TodoList extends React.Component {
     firebaseDb.collection('todos')
       .doc(todo.id)
       .delete()
-      .then(()=>{
-        const newTodos = this.state.todos.filter(item => item.id !== todo.id)
-        this.setState({todos: newTodos})
-      })
+      // .then(()=>{
+      //   const newTodos = this.state.todos.filter(item => item.id !== todo.id)
+      //   this.setState({todos: newTodos})
+      // })
   }
 
   render() {
