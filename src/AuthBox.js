@@ -45,18 +45,29 @@ export default class AuthBox extends React.Component {
       .catch(err => this.setState({message: JSON.stringify(err)}))
   }
 
+  signout = () => {
+    firebaseAuth.signOut()
+  }
+
   render() {
     return (
       <div>
-        <div>
-          <span>Email:</span>
-          <input type='text' name='email' onChange={this.inputChange}/>
-          <span>Password</span>
-          <input type='password' name='password' onChange={this.inputChange}/>
-          <button onClick={this.login}>Login</button>
-          <button onClick={this.signup}>Signup</button>
-        </div>
-        <p>{this.state.message}</p>
+        {
+          !this.state.user &&
+          <div>
+            <span>Email:</span>
+            <input type='text' name='email' onChange={this.inputChange}/>
+            <span>Password</span>
+            <input type='password' name='password' onChange={this.inputChange}/>
+            <button onClick={this.login}>Login</button>
+            <button onClick={this.signup}>Signup</button>
+            <p>{this.state.message}</p>
+          </div>
+        }
+        {
+          this.state.user &&
+          <button onClick={this.signout}>SignOut</button>
+        }
       </div>
     )
   }
