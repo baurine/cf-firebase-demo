@@ -17,6 +17,16 @@ export default class TodoList extends React.Component {
     }
   }
 
+  componentDidMount() {
+    firebaseDb.collection('todos')
+      .where('author', '==', this.props.user.email)
+      .onSnapshot(snapshot => {
+        let todos = []
+        snapshot.forEach(item => todos.push({id: item.id, ...item.data()}))
+        this.setState({todos})
+      })
+  }
+
   inputChange = (e) => {
     this.setState({text: e.target.value})
   }
@@ -39,12 +49,20 @@ export default class TodoList extends React.Component {
         }
         const newTodos = this.state.todos.concat(newTodo)
         this.setState({todos: newTodos, text: ''})
+        console.log(newTodo)
       })
   }
 
   delTodo = (todo) => {
-    const todos = this.state.todos.filter(item => item.created_at !== todo.created_at)
-    this.setState({todos})
+    // const todos = this.state.todos.filter(item => item.created_at !== todo.created_at)
+    // this.setState({todos})
+    firebaseDb.collection('todos')
+      .doc(todo.id)
+      .delete()
+      .then(()=>{
+        const newTodos = this.state.todos.filter(item => item.id !== todo.id)
+        this.setState({todos: newTodos})
+      })
   }
 
   render() {
