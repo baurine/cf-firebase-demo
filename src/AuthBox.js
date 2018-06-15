@@ -23,8 +23,17 @@ export default class AuthBox extends React.Component {
   }
 
   login = () => {
+    this.setState({message: 'loading...'})
     const { email, password } = this.state
     firebaseAuth.signInWithEmailAndPassword(email, password)
+      .then(user => this.setState({message: JSON.stringify(user)}))
+      .catch(err => this.setState({message: JSON.stringify(err)}))
+  }
+
+  signup = () => {
+    this.setState({message: 'loading...'})
+    const { email, password } = this.state
+    firebaseAuth.createUserWithEmailAndPassword(email, password)
       .then(user => this.setState({message: JSON.stringify(user)}))
       .catch(err => this.setState({message: JSON.stringify(err)}))
   }
