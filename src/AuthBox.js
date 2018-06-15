@@ -7,8 +7,15 @@ export default class AuthBox extends React.Component {
     this.state = {
       email: '',
       password: '',
-      message: ''
+      message: 'loading...',
+      user: null
     }
+  }
+
+  componentDidMount() {
+    firebaseAuth.onAuthStateChanged(user => {
+      this.setState({user, message:JSON.stringify(user)})
+    })
   }
 
   inputChange = (e) => {
@@ -26,7 +33,7 @@ export default class AuthBox extends React.Component {
     this.setState({message: 'loading...'})
     const { email, password } = this.state
     firebaseAuth.signInWithEmailAndPassword(email, password)
-      .then(user => this.setState({message: JSON.stringify(user)}))
+      .then(user => this.setState({message: JSON.stringify(user), user}))
       .catch(err => this.setState({message: JSON.stringify(err)}))
   }
 
@@ -34,7 +41,7 @@ export default class AuthBox extends React.Component {
     this.setState({message: 'loading...'})
     const { email, password } = this.state
     firebaseAuth.createUserWithEmailAndPassword(email, password)
-      .then(user => this.setState({message: JSON.stringify(user)}))
+      .then(user => this.setState({message: JSON.stringify(user), user}))
       .catch(err => this.setState({message: JSON.stringify(err)}))
   }
 
