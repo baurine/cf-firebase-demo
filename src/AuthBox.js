@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { firebaseAuth } from './firebase'
+
+import TodoList from './TodoList'
 
 export default class AuthBox extends React.Component {
   constructor(props) {
@@ -66,7 +68,10 @@ export default class AuthBox extends React.Component {
         }
         {
           this.state.user &&
-          <button onClick={this.signout}>SignOut</button>
+          <div>
+            <button onClick={this.signout}>SignOut</button>
+            <TodoList/>
+          </div>
         }
       </div>
     )
