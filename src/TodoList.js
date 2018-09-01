@@ -20,6 +20,7 @@ export default class TodoList extends React.Component {
   componentDidMount() {
     firebaseDb.collection('todos')
       .where('author', '==', this.props.user.email)
+      .orderBy('created_at')
       .onSnapshot(snapshot => {
         let todos = []
         snapshot.forEach(item => todos.push({id: item.id, ...item.data()}))
